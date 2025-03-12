@@ -1,0 +1,53 @@
+NPM
+- node package manager
+- správce balíčků, které používáme v rámci node.js
+- internetová databáze (balíčky od "cizích" lidí)
+- existují i jiní správci jako NPM
+
+npm init
+
+- není přípona .mjs, ale jenom .js, protože když se importují knihovny, používá se syntaxe import ... from ...
+    -> místo .mjs do package.json napíšeme type: module
+    -> node bude používat syntaxi import .... from.... a ne tu starší verzi
+- package-lock.json se vytváří, protože dřív byl problém s verzemi, kdy každý používal nějakou jinou od jednoho balíčku
+    -> když chceme konkrétní verzi, je v něm specifikováno, co konkrétně za verzi to je
+    -> npm se kouká do package-lock a instaluje to podle toho
+- ^ je u verzí proto, že když spustím npm update, projde to závilosti, jeslti nevyšla verze a když ano, tak ji nainstaluje
+
+createServer
+- vytváří http server
+- bere jeden vstupní argument
+- spouští se server.listen()
+    -> první paramter je číslo portu, kde poslouchá
+- číslo portu 
+    -> porty s číslem pod 1000 jsou "rezervovaný" a potřebujeme sudo k připojením k nim
+    -> je to jenom konvence
+
+- existuje náhrada za nodemon
+    -> automatické obnovení serveru při změně v kódu
+    -> do package.json do scripts dáme --watch ke spouštěcímu skriptu
+
+- součástí http protokolu jsou statuty (400, 500, 200 apod.)
+- potom jsou metody (GET, POST, PUT, DELETE...)
+
+- kromě status kódu existují i hlavičky
+    -> můžeme je upravit pomocí HTML tagů
+    -> ke správné interpretaci tagů musí server říct, co je to za typ obsahu
+    -> res.setHeader()
+
+import http from 'http';
+import chalk from 'chalk';
+
+const server = http.createServer((req, res) => {
+  console.log(chalk.blue('Request received'));
+
+  console.log(req.url);
+
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html');
+  res.write('<h1>Hello world</h1>');
+  res.end();
+});
+server.listen(3000, () => {
+  console.log(chalk.green('Server started'));
+});
