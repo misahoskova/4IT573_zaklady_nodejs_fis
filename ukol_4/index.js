@@ -7,12 +7,12 @@ import { renderFile } from "ejs"
 const todos = [
   {
     id: 1,
-    title: "Zajit na pivo",
+    title: "Nakrmit dinosaura",
     done: false,
   },
   {
     id: 2,
-    title: "Doplnit skripty",
+    title: "Udělat daňové přiznání",
     done: false,
   },
 ]
@@ -24,7 +24,7 @@ app.use(serveStatic({ root: "public" }))
 
 app.get("/", async (c) => {
   const rendered = await renderFile("views/index.html", {
-    title: "My todo app",
+    title: "Úkolníček",
     todos,
   })
 
@@ -65,6 +65,32 @@ app.get("/todos/:id/remove", async (c) => {
   todos.splice(index, 1)
 
   return c.redirect("/")
+})
+
+app.get("/todo/:id", async (c) => {
+  const id = Number(c.req.param("id"))
+  const todo = todos.find((t) => t.id === id)
+
+  if (!todo) return c.notFound()
+
+  const rendered = await renderFile("views/detail.html", {
+    todo,
+  })
+  return c.html(rendered)
+})
+
+app.post("/todo/:id/rename", async (c) => {
+  const id = Number(c.req.param("id"))
+  const form = await c.req.formData()
+  const newTitle = form.get("title")
+
+  const todo = todos.find((t) => t.id === id)
+
+  if (!todo) return c.notFound()
+
+  todo.title = newTitle
+
+  return c.redirect(`/todo/${id}`)
 })
 
 serve(app, (info) => {
