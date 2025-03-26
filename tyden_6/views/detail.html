@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Detail Todo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title has-text-centered">
+          DETAIL ÚKOLU
+        </h1>
+
+        <div class="box">
+          <h2 class="subtitle">
+            &#x1F5D2 <%= todo.title %>
+          </h2>
+
+          <p class="mb-4">
+            Stav: <% if (todo.done) { %>
+            <span class="tag is-success">Dokončeno</span>
+            <% } else { %>
+            <span class="tag is-warning">Nedokončeno</span>
+            <% } %>
+          </p>
+
+          <div class="buttons">
+            <a
+              class="button is-link is-light"
+              href="/todos/<%= todo.id %>/toggle"
+            >
+              Změnit stav
+            </a>
+            <a
+              class="button is-danger is-light"
+              href="/todos/<%= todo.id %>/remove"
+            >
+              Odstranit
+            </a>
+            <a class="button is-light" href="/"
+              >Zpět na seznam</a
+            >
+          </div>
+
+          <hr />
+
+          <form
+            method="post"
+            action="/todo/<%= todo.id %>/rename"
+          >
+            <div class="field">
+              <label class="label">Přejmenovat úkol</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  name="title"
+                  value="<%= todo.title %>"
+                  required
+                />
+              </div>
+            </div>
+            <button class="button is-primary" type="submit">
+              Uložit změny
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
