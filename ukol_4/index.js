@@ -45,12 +45,16 @@ app.post("/todos", async (c) => {
 
 app.get("/todos/:id/toggle", async (c) => {
   const id = Number(c.req.param("id"))
+  const from = c.req.query("from")
 
   const todo = todos.find((todo) => todo.id === id)
-
   if (!todo) return c.notFound()
 
   todo.done = !todo.done
+
+  if (from === "detail") {
+    return c.redirect(`/todo/${id}`)
+  }
 
   return c.redirect("/")
 })
